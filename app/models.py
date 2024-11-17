@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date
 
-from .models import Base
+from app.base import Base 
 
 class DriverLicenseApplication(Base):
     __tablename__ = "driver_license_applications"
@@ -17,3 +17,5 @@ class DriverLicenseApplication(Base):
     mailing_address = Column(String)
     province = Column(String, nullable=False)
     postal_code = Column(String, nullable=False)
+
+print("models.py loaded")
