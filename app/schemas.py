@@ -20,5 +20,5 @@ class DriverLicenseCreate(DriverLicenseBase):
 class DriverLicense(DriverLicenseBase):
     id: int
 
-    class Config:
-        orm_mode = True
+class Config:
+        from_attributes = True
