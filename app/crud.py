@@ -5,7 +5,7 @@ from .schemas import DriverLicenseCreate
 from .main import app 
 
 def create_driver_license(db: Session, license_data: DriverLicenseCreate):
-    db_license = DriverLicenseApplication(**license_data.dump())
+    db_license = DriverLicenseApplication(**license_data.dict())
     db.add(db_license)
     db.commit()
     db.refresh(db_license)
