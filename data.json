@@ -1,70 +1,68 @@
 {
-    "last_name": "Smith",
-    "first_name": "John",
-    "middle_name": "Alexander",
-    "license_number": "L123456789",
-    "date_of_birth": "1985-07-15",
-    "sex": "Male",
-    "height_cm": 180,
-    "residential_address": "123 Maple Street",
-    "mailing_address": "456 Oak Avenue",
-    "province": "Ontario",
-    "postal_code": "A1B2C3"
-  }
+  "last_name": "Smith",
+  "first_name": "John",
+  "middle_name": "Alexander",
+  "license_number": "L123456789",
+  "date_of_birth": "1985-07-15",
+  "sex": "Male",
+  "height_cm": 180,
+  "residential_address": "123 Maple Street",
+  "mailing_address": "456 Oak Avenue",
+  "province": "Ontario",
+  "postal_code": "A1B2C3"
+}
 
   {
-    "last_name": "Doe",
-    "first_name": "Jane",
-    "middle_name": "Elizabeth",
-    "license_number": "L987654321",
-    "date_of_birth": "1992-03-08",
-    "sex": "Female",
-    "height_cm": 165,
-    "residential_address": "789 Pine Lane",
-    "mailing_address": "789 Pine Lane",
-    "province": "Quebec",
-    "postal_code": "D4E5F6"
-  }
+  "last_name": "Doe",
+  "first_name": "Jane",
+  "middle_name": "Elizabeth",
+  "license_number": "L987654321",
+  "date_of_birth": "1992-03-08",
+  "sex": "Female",
+  "height_cm": 165,
+  "residential_address": "789 Pine Lane",
+  "mailing_address": "789 Pine Lane",
+  "province": "Quebec",
+  "postal_code": "D4E5F6"
+}
 
   {
-    "last_name": "Lee",
-    "first_name": "Chris",
-    "middle_name": "Michael",
-    "license_number": "L555123789",
-    "date_of_birth": "2000-12-25",
-    "sex": "Non-Binary",
-    "height_cm": 172,
-    "residential_address": "321 Birch Road",
-    "mailing_address": "PO Box 123",
-    "province": "British Columbia",
-    "postal_code": "G7H8I9"
-  }
+  "last_name": "Lee",
+  "first_name": "Chris",
+  "middle_name": "Michael",
+  "license_number": "L555123789",
+  "date_of_birth": "2000-12-25",
+  "sex": "Non-Binary",
+  "height_cm": 172,
+  "residential_address": "321 Birch Road",
+  "mailing_address": "PO Box 123",
+  "province": "British Columbia",
+  "postal_code": "G7H8I9"
+}
   
   {
-    "last_name": "Patel",
-    "first_name": "Anika",
-    "middle_name": "Ravi",
-    "license_number": "L888444777",
-    "date_of_birth": "1978-06-14",
-    "sex": "Female",
-    "height_cm": 155,
-    "residential_address": "55 Elm Boulevard",
-    "mailing_address": "55 Elm Boulevard",
-    "province": "Alberta",
-    "postal_code": "J2K3L4"
-  }
+  "last_name": "Patel",
+  "first_name": "Anika",
+  "middle_name": "Ravi",
+  "license_number": "L888444777",
+  "date_of_birth": "1978-06-14",
+  "sex": "Female",
+  "height_cm": 155,
+  "residential_address": "55 Elm Boulevard",
+  "mailing_address": "55 Elm Boulevard",
+  "province": "Alberta",
+  "postal_code": "J2K3L4"
+}
   {
-    "last_name": "Garcia",
-    "first_name": "Carlos",
-    "middle_name": "Fernando",
-    "license_number": "L666222999",
-    "date_of_birth": "1995-09-23",
-    "sex": "Male",
-    "height_cm": 178,
-    "residential_address": "987 Cedar Court",
-    "mailing_address": "987 Cedar Court",
-    "province": "Manitoba",
-    "postal_code": "M5N6O7"
-  }
-  
-  
+  "last_name": "Garcia",
+  "first_name": "Carlos",
+  "middle_name": "Fernando",
+  "license_number": "L666222999",
+  "date_of_birth": "1995-09-23",
+  "sex": "Male",
+  "height_cm": 178,
+  "residential_address": "987 Cedar Court",
+  "mailing_address": "987 Cedar Court",
+  "province": "Manitoba",
+  "postal_code": "M5N6O7"
+}

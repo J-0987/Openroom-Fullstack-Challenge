@@ -15,6 +15,8 @@ class DriverLicenseBase(BaseModel):
     province: str
     postal_code: str
 
+    model_config = ConfigDict(from_attributes=True)
+
 class DriverLicenseCreate(DriverLicenseBase):
     pass
 
