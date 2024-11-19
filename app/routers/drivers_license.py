@@ -40,5 +40,6 @@ def delete_license(license_id: int, db: Session = Depends(get_db)):
     db_license = crud.delete_driver_license(db=db, license_id=license_id)
     if db_license is None:
         raise HTTPException(status_code=404, detail="License not found")
-    return db_license
+    return
+
 
