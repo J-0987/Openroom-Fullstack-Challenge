@@ -1,11 +1,14 @@
 from pydantic import BaseModel, Field, ConfigDict
 from datetime import date
-from typing import Annotated
+from typing import Optional
 
-class DriverLicenseBase(BaseModel):
-    last_name: str = Field(min_length=2, max_length=50)
-    first_name: str = Field(min_length=2, max_length=50)
-    middle_name: str | None = None 
+
+
+'base class - contains all fields in application form'
+class LicenseApplicationBase(BaseModel):
+    last_name: str 
+    first_name: str 
+    middle_name: Optional[str] = None
     license_number: str
     date_of_birth: date
     sex: str
@@ -17,10 +20,27 @@ class DriverLicenseBase(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class CreateApplication(DriverLicenseBase):
+class CreateApplication(LicenseApplicationBase):
     pass
 
-class DriverLicense(DriverLicenseBase):
+'output class-goes into database, needs ID'
+class LicenseApplications(LicenseApplicationBase):
     id: int
 
-model_config = ConfigDict(from_attributes=True)
+connect_args = {"check_same_thread": False}
+
+"""
+Steps to creating schemas:
+1. Create base class - class NameBase(BaseModel)
+    This contains all the fields in application form
+
+2. Class for user input - this will inherit all the fields from the base class
+    class CreateApplication(NameBase)
+
+    used specifically for creating new driver's licenses. The pass statement means it adds no new fields.
+3. Class for output - this will inherit all the fields from the base class plus an ID to be stored in database
+
+Notes:
+- Field used in schemas serve the purpose of serialization (how data is shown in console for eg) and Input validation
+
+"""

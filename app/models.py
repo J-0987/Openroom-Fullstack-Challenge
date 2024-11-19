@@ -19,3 +19,9 @@ class DriverLicenseApplication(SQLModel, table=True):
     postal_code: str
 
 print("models.py loaded")
+
+
+'''
+Notes
+- Field used in schemas serve the purpose of serialization (how data is shown in console for eg) and 
+'''
