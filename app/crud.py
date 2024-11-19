@@ -19,4 +19,3 @@ def delete_driver_license(db: Session, license_id: int):
     db_license = db.query(DriverLicenseApplication).filter(DriverLicenseApplication.id == license_id).first()
     db.delete(db_license)
     db.commit()
-    return db_license
