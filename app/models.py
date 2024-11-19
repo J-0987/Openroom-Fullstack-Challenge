@@ -1,21 +1,21 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlmodel import SQLModel, Field
+from datetime import date
+from typing import Optional
 
-from app.base import Base 
+class DriverLicenseApplication(SQLModel, table=True):
+    __tablename__ = "license_applications"
 
-class DriverLicenseApplication(Base):
-    __tablename__ = "driver_license_applications"
-
-    id = Column(Integer, primary_key=True, index=True)
-    last_name = Column(String, nullable=False)
-    first_name = Column(String, nullable=False)
-    middle_name = Column(String)
-    license_number = Column(String, unique=True)
-    date_of_birth = Column(Date, nullable=False)
-    sex = Column(String, nullable=False)
-    height_cm = Column(Integer, nullable=False)
-    residential_address = Column(String, nullable=False)
-    mailing_address = Column(String)
-    province = Column(String, nullable=False)
-    postal_code = Column(String, nullable=False)
+    id: int = Field(default=None, primary_key=True)
+    last_name: str
+    first_name: str
+    middle_name: Optional[str] = None
+    license_number: str = Field(unique=True)
+    date_of_birth: date
+    sex: str
+    height_cm: int
+    residential_address: str
+    mailing_address: str
+    province: str
+    postal_code: str
 
 print("models.py loaded")

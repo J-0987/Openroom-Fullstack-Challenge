@@ -4,7 +4,10 @@ from fastapi import FastAPI
 from app.routers import drivers_license
 from app.database import Base, engine
 from app import crud
+from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
+from sqlmodel import SQLModel
+
 
 # Create tables
 Base.metadata.create_all(bind=engine)
