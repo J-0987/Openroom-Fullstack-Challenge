@@ -23,5 +23,5 @@ print("models.py loaded")
 
 '''
 Notes
-- Field used in schemas serve the purpose of serialization (how data is shown in console for eg) and 
+
 '''
