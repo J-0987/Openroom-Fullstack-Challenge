@@ -1,11 +1,10 @@
 from fastapi import Depends
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 from .models import DriverLicenseApplication
-from .schemas import DriverLicenseCreate
-from .main import app 
+from .schemas import CreateApplication
 
-def create_driver_license(db: Session, license_data: DriverLicenseCreate):
-    db_license = DriverLicenseApplication(**license_data.dict())
+def create_application(db: Session, license_data: CreateApplication):
+    db_license = DriverLicenseApplication.model_validate(license_data)
     db.add(db_license)
     db.commit()
     db.refresh(db_license)
@@ -13,9 +12,11 @@ def create_driver_license(db: Session, license_data: DriverLicenseCreate):
 
 
 def get_driver_licenses(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(DriverLicenseApplication).offset(skip).limit(limit).all()
+    statement = select(DriverLicenseApplication).offset(skip).limit(limit)
+    return db.exec(statement).all()
 
-def delete_driver_license(db: Session, license_id: int):
-    db_license = db.query(DriverLicenseApplication).filter(DriverLicenseApplication.id == license_id).first()
+def delete_application(db: Session, license_id: int):
+    statement = select(DriverLicenseApplication). where(DriverLicenseApplication.id == license_id)
+    db_license = db.exec(statement).first()
     db.delete(db_license)
     db.commit()

@@ -17,7 +17,7 @@ class DriverLicenseBase(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class DriverLicenseCreate(DriverLicenseBase):
+class CreateApplication(DriverLicenseBase):
     pass
 
 class DriverLicense(DriverLicenseBase):

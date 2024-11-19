@@ -10,7 +10,7 @@ from sqlmodel import SQLModel
 
 
 # Create tables
-Base.metadata.create_all(bind=engine)
+SQLModel.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
