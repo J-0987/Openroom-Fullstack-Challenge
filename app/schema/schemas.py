@@ -1,30 +1,37 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional
+from typing import Optional, Annotated
 from pydantic import BaseModel, Field, constr, conint
 from datetime import date
 from typing import Optional
+from ..enums import SexEnum, ProvinceEnum
 
 
 
 'base class - contains all fields in application form'
 class LicenseApplicationBase(BaseModel):
-    last_name: constr (min_length=1, max_length=50, strip_whitespace=True) = Field(
+    last_name: Annotated[str, Field(
+        min_length=1, 
+        max_length=50,
         description="Last name of applicant (1-50 characters)",
         examples=["Smith"]
-    )
-    first_name: constr(min_length=1, max_length=50, strip_whitespace=True) = Field(
+    )]
+    first_name: Annotated[str, Field(
+        min_length=1,
+        max_length=50,
         description="First name of applicant (1-50 characters)",
         examples=["John"]
-    )
-    middle_name: Optional[constr(max_length=50, strip_whitespace=True)] = Field(
+    )]
+    middle_name: Optional[Annotated[str, Field(
+        max_length=50,
         default=None,
         description="Middle name of applicant (optional, max 50 characters)",
         examples=["Robert"]
-    )
-    license_number: constr(regex="^[A-Z]{2}[0-9]{6}$") = Field(
+    )]]
+    license_number: Annotated[str, Field(
+        pattern="^[A-Z]{2}[0-9]{6}$",
         description="Driver's license number in format XX123456",
         examples=["AB123456"]
-    )
+    )]
     date_of_birth: date = Field(
         description="Date of birth of applicant (YYYY-MM-DD)",
         examples=["1990-01-01"]
@@ -33,41 +40,45 @@ class LicenseApplicationBase(BaseModel):
         description="Biological sex of applicant",
         examples=["male"]
     )
-    height_cm: conint(ge=50, le=300) = Field(
+    height_cm: Annotated[int, Field(
+        ge=50,
+        le=300,
         description="Height of applicant in centimeters (50-300cm)",
         examples=[175]
-    )
-    residential_address: constr(min_length=5, max_length=200, strip_whitespace=True) = Field(
+    )]
+    residential_address: Annotated[str, Field(
+        min_length=5,
+        max_length=200,
         description="Residential address of applicant (5-200 characters)",
         examples=["123 Main Street, Apartment 4B"]
-    )
-    mailing_address: constr(min_length=5, max_length=200, strip_whitespace=True) = Field(
+    )]
+    mailing_address: Annotated[str, Field(
+        min_length=5,
+        max_length=200,
         description="Mailing address of applicant (5-200 characters)",
         examples=["123 Main Street, Apartment 4B"]
-    )
+    )]
     province: ProvinceEnum = Field(
         description="Province of applicant",
         examples=["Ontario"]
     )
-    postal_code: constr(regex="^[A-Z][0-9][A-Z]\s?[0-9][A-Z][0-9]$", strip_whitespace=True) = Field(
+    postal_code: Annotated[str, Field(
+        pattern="^[A-Z][0-9][A-Z]\s?[0-9][A-Z][0-9]$",
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
-    )
+    )]
 
-    model_config = ConfigDict(from_attributes=True)
+model_config = ConfigDict(from_attributes=True)
 
 class CreateApplication(LicenseApplicationBase):
+    """Schema for creating a new license application"""
     pass
 
-'output class-goes into database, needs ID'
-class LicenseApplications(LicenseApplicationBase):
-    id: int
+class LicenseApplicationList(LicenseApplicationBase):
+    """Schema for license application with database ID"""
+    id: int = Field(description="Unique identifier for the application")
 
-connect_args = {"check_same_thread": False}
 
-model_config = {
-        "from_attributes": True 
-    }
 
 """
 Steps to creating schemas:
