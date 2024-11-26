@@ -5,8 +5,6 @@ from datetime import date
 from typing import Optional
 from ..enums import SexEnum, ProvinceEnum
 
-
-
 'base class - contains all fields in application form'
 class LicenseApplicationBase(BaseModel):
     last_name: Annotated[str, Field(
