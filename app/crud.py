@@ -1,7 +1,7 @@
 from fastapi import Depends
 from sqlmodel import Session, select
 from .models import DriverLicenseApplication
-from .schemas import CreateApplication
+from .schema import CreateApplication
 
 def create_application(db: Session, license_data: CreateApplication):
     db_license = DriverLicenseApplication.model_validate(license_data)
