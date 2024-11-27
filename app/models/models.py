@@ -1,9 +1,12 @@
-ffrom typing import Optional
+from typing import Optional
 from sqlmodel import SQLModel, Field
 from datetime import date
 from ..enums import SexEnum, ProvinceEnum
 
 class LicenseApplicationBase(SQLModel):
+    id: Optional[int] = Field(
+    default=None, primary_key=True)
+
     last_name: str = Field(
         min_length=1,
         max_length=50,
@@ -30,7 +33,7 @@ class LicenseApplicationBase(SQLModel):
     date_of_birth: date = Field(
         description="Date of birth of applicant"
     )
-    sex: SexEnum = Field(
+    sex: str= Field(
         description="Biological sex of applicant"
     )
     height_cm: int = Field(
@@ -48,7 +51,7 @@ class LicenseApplicationBase(SQLModel):
         max_length=200,
         description="Mailing address of applicant"
     )
-    province: ProvinceEnum = Field(
+    province: str = Field(
         description="Province of applicant"
     )
     postal_code: str = Field(
@@ -61,6 +64,7 @@ class LicenseApplication(LicenseApplicationBase, table=True):
     __tablename__ = "license_applications"
     
     id: Optional[int] = Field(default=None, primary_key=True)
+print("LicenseApplication loaded")
 
 
 '''

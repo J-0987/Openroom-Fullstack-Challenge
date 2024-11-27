@@ -12,12 +12,13 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(
     DATABASE_URL,
     echo=True,  # Set to False in production
-    pool_pre_ping=True,
-    pool_size=5,
-    max_overflow=10
+  
 )
+print(f"DATABASE_URL: {DATABASE_URL}")
 
 # Session dependency
 def get_session() -> Generator[Session, None, None]:
     with Session(engine) as session:
         yield session
+
+

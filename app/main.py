@@ -1,8 +1,7 @@
-
-
+import logging
 from fastapi import FastAPI
 from app.routers import drivers_license
-from app.database import Base, engine
+from app.database import  engine
 from app import crud
 from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,4 +30,8 @@ app.add_middleware(
 # Include routes
 app.include_router(drivers_license.router, prefix="/api")
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logging.debug("main.py loaded")
 print("main.py loaded")

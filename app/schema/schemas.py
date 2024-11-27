@@ -7,6 +7,7 @@ from ..enums import SexEnum, ProvinceEnum
 
 'base class - contains all fields in application form'
 class LicenseApplicationBase(BaseModel):
+
     last_name: Annotated[str, Field(
         min_length=1, 
         max_length=50,
@@ -26,7 +27,7 @@ class LicenseApplicationBase(BaseModel):
         examples=["Robert"]
     )]]
     license_number: Annotated[str, Field(
-        pattern="^[A-Z]{2}[0-9]{6}$",
+        pattern="^[A-Za-z0-9]*$",
         description="Driver's license number in format XX123456",
         examples=["AB123456"]
     )]
@@ -34,7 +35,7 @@ class LicenseApplicationBase(BaseModel):
         description="Date of birth of applicant (YYYY-MM-DD)",
         examples=["1990-01-01"]
     )
-    sex: SexEnum = Field(
+    sex: str = Field(
         description="Biological sex of applicant",
         examples=["male"]
     )
@@ -56,12 +57,12 @@ class LicenseApplicationBase(BaseModel):
         description="Mailing address of applicant (5-200 characters)",
         examples=["123 Main Street, Apartment 4B"]
     )]
-    province: ProvinceEnum = Field(
+    province: str = Field(
         description="Province of applicant",
         examples=["Ontario"]
     )
     postal_code: Annotated[str, Field(
-        pattern="^[A-Z][0-9][A-Z]\s?[0-9][A-Z][0-9]$",
+        pattern="^[A-Za-z0-9]*$",
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
     )]
