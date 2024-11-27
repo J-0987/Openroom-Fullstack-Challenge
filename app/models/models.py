@@ -46,11 +46,6 @@ class LicenseApplicationBase(SQLModel):
         max_length=200,
         description="Residential address of applicant"
     )
-    mailing_address: str = Field(
-        min_length=5,
-        max_length=200,
-        description="Mailing address of applicant"
-    )
     province: str = Field(
         description="Province of applicant"
     )

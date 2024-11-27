@@ -51,12 +51,7 @@ class LicenseApplicationBase(BaseModel):
         description="Residential address of applicant (5-200 characters)",
         examples=["123 Main Street, Apartment 4B"]
     )]
-    mailing_address: Annotated[str, Field(
-        min_length=5,
-        max_length=200,
-        description="Mailing address of applicant (5-200 characters)",
-        examples=["123 Main Street, Apartment 4B"]
-    )]
+    
     province: str = Field(
         description="Province of applicant",
         examples=["Ontario"]
