@@ -1,25 +1,65 @@
+from typing import Optional
 from sqlmodel import SQLModel, Field
 from datetime import date
-import enum from
-from typing import Optional
+from ..enums import SexEnum, ProvinceEnum
 
-class DriverLicenseApplication(SQLModel, table=True):
+class LicenseApplicationBase(SQLModel):
+    id: Optional[int] = Field(
+    default=None, primary_key=True)
+
+    last_name: str = Field(
+        min_length=1,
+        max_length=50,
+        description="Last name of applicant",
+        index=True
+    )
+    first_name: str = Field(
+        min_length=1,
+        max_length=50,
+        description="First name of applicant",
+        index=True
+    )
+    middle_name: Optional[str] = Field(
+        default=None,
+        max_length=50,
+        description="Middle name of applicant"
+    )
+    license_number: str = Field(
+        description="Driver's license number",
+        unique=True,
+        index=True,
+        sa_column_kwargs={"unique": True}
+    )
+    date_of_birth: date = Field(
+        description="Date of birth of applicant"
+    )
+    sex: str= Field(
+        description="Biological sex of applicant"
+    )
+    height_cm: int = Field(
+        description="Height of applicant in centimeters",
+        gt=50,
+        lt=300
+    )
+    residential_address: str = Field(
+        min_length=5,
+        max_length=200,
+        description="Residential address of applicant"
+    )
+    province: str = Field(
+        description="Province of applicant"
+    )
+    postal_code: str = Field(
+        max_length=7,
+        description="Postal code of applicant"
+    )
+
+class LicenseApplication(LicenseApplicationBase, table=True):
+    """Database model for license applications"""
     __tablename__ = "license_applications"
-
-    id: int = Field(primary_key=True)
-    last_name: str = Field(nullable=False)
-    first_name: str = Field(nullable=False)
-    middle_name: str = Field(default=None)
-    license_number: str = Field(unique=True, nullable=False)
-    date_of_birth: date = Field(nullable=False)
-    sex: SexEnum = Field(nullable=False)
-    height_cm: int = Field(nullable=False)
-    residential_address: str = Field(nullable=False)
-    mailing_address: str = Field(default=None)
-    province: str = Field(nullable=False)
-    postal_code: str = Field(nullable=False)
-
-print("models.py loaded")
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+print("LicenseApplication loaded")
 
 
 '''

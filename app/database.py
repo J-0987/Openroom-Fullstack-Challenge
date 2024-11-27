@@ -1,15 +1,24 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlmodel import create_engine, Session
+from typing import Generator
 import os
 from dotenv import load_dotenv
-from app.base import Base 
 
 load_dotenv()
 
+# Database URL configuration
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Create engine with proper configuration for PostgreSQL
+engine = create_engine(
+    DATABASE_URL,
+    echo=True,  # Set to False in production
+  
+)
+print(f"DATABASE_URL: {DATABASE_URL}")
 
-print("database.py loaded")
+# Session dependency
+def get_session() -> Generator[Session, None, None]:
+    with Session(engine) as session:
+        yield session
+
+
