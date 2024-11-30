@@ -3,11 +3,10 @@ from typing import Optional, Annotated
 from pydantic import BaseModel, Field, constr, conint
 from datetime import date
 from typing import Optional
-from ..enums import SexEnum, ProvinceEnum
-
+from enum import Enum
 'base class - contains all fields in application form'
 
-# Completed application schema
+# Base class for license
 class LicenseApplicationBase(BaseModel):
 
     last_name: Annotated[str, Field(
@@ -29,7 +28,7 @@ class LicenseApplicationBase(BaseModel):
         examples=["Robert"]
     )]]
     license_number: Annotated[str, Field(
-        pattern="^[A-Za-z0-9]*$",
+        pattern="^[A-Z][0-9]{14}$",
         description="Driver's license number in format XX123456",
         examples=["AB123456"]
     )]
@@ -63,32 +62,44 @@ class LicenseApplicationBase(BaseModel):
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
     )]
+    status: str = Field(
+        default="draft",
+        description="Application status",
+        examples=["draft", "submitted"]
+    )
 
-# Partial application schema
-class LicenseApplicationSave(BaseModel):
-    last_name: Optional[str]
-    first_name: Optional[str]
-    middle_name: Optional[str]
-    license_number: Optional[str]
-    date_of_birth: Optional[date]
-    sex: Optional[str]
-    height_cm: Optional[int]
-    residential_address: Optional[str]
-    province: Optional[str]
-    postal_code: Optional[str]
+## Schema for submitted applications
+class SubmitApplication(LicenseApplicationBase):
+    """Schema for final submission with required fields and validations"""
 
+    last_name: str = Field(..., description="Required: Applicant's legal last name")
+    first_name: str = Field(..., description="Required: Applicant's legal first name")
+    license_number: str = Field(..., description="Required: Driver's license number")
+    date_of_birth: date = Field(..., description="Required: Date of birth")
+    sex: str = Field(..., description="Required: Biological sex")
+    height_cm: int = Field(..., description="Required: Height in centimeters")
+    residential_address: str = Field(..., description="Required: Current address")
+    province: str = Field(..., description="Required: Province of residence")
+    postal_code: str = Field(..., description="Required: Postal code")
+    status: str = Field(default="submitted", description="Application status")
 
-model_config = ConfigDict(from_attributes=True)
+    """ In Pydantic, Field(...) means the field is required and has no default value1. The ellipsis (...) is Python's way of indicating a required value without a default."""
+ 
 
-class CreateApplication(LicenseApplicationBase):
-    """Schema for creating a new license application"""
-    pass
-
-class LicenseApplicationList(LicenseApplicationBase):
+## Response schema for saved applications
+class LicenseApplicationResponse(LicenseApplicationBase):
     """Schema for license application with database ID"""
     id: int = Field(description="Unique identifier for the application")
 
+class LicenseApplicationList(LicenseApplicationBase):
+    """Schema for license application with database ID"""
+    id: int
+    first_name: Optional[str]
+    last_name: Optional[str]
+    license_number: Optional[str]
+    status: str
 
+model_config = ConfigDict(from_attributes=True)
 
 """
 Steps to creating schemas:
@@ -101,14 +112,21 @@ Steps to creating schemas:
     used specifically for creating new driver's licenses. The pass statement means it adds no new fields.
 3. Class for output - this will inherit all the fields from the base class plus an ID to be stored in database
 
-Notes:
-- Schemas are for
+
+4. Schemas are for
     - defining the structure of the data
     - defining constraints
     - It is EVERYTHING DATA
     - error messages are user friendly - with the use of constraints, users can see errors immediately
     - Validate incoming user data (e.g., ensuring correct format, required fields, etc.).
     - Add stricter constraints that aren't enforced at the database level (e.g., regex for postal codes).
+
+Notes
+   To allow for save functionlity, I am trialling 2 ways 
+    1. Create partial schemas with all fields as optional
+        ??How do I ensure both schemas will be in the same table?
+    2. Create a base schema with all fields as optional, add validations before submitting. Each will be accompanied by status - "draft and submitted"
+
 
 
 """

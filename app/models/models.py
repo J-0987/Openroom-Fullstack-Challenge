@@ -1,101 +1,64 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field
 from datetime import date
-from ..enums import SexEnum, ProvinceEnum
 
-# Completed Application Model
-class LicenseApplicationBase(SQLModel):
-    id: Optional[int] = Field(
-    default=None, primary_key=True)
+class LicenseApplication(SQLModel, table=True):
+    """Database model for license applications"""
+    __tablename__ = "license_applications"
 
-    last_name: str = Field(
-        min_length=1,
+    id: Optional[int] = Field(default=None, primary_key=True)
+    
+    # Required fields with validation constraints
+    last_name: Optional[str] = Field(
+        default=None,
         max_length=50,
-        description="Last name of applicant",
-        index=True
+        index=True,
+        description="Last name of applicant"
     )
-    first_name: str = Field(
-        min_length=1,
+    first_name: Optional[str] = Field(
+        default=None,
         max_length=50,
-        description="First name of applicant",
-        index=True
+        index=True,
+        description="First name of applicant"
     )
     middle_name: Optional[str] = Field(
         default=None,
         max_length=50,
         description="Middle name of applicant"
     )
-    license_number: str = Field(
-        description="Driver's license number",
+    license_number: Optional[str] = Field(
+        default=None,
         unique=True,
         index=True,
-        sa_column_kwargs={"unique": True}
+        description="Driver's license number"
     )
-    date_of_birth: date = Field(
+    date_of_birth: Optional[date] = Field(
+        default=None,
         description="Date of birth of applicant"
     )
-    sex: str= Field(
+    sex: Optional[str] = Field(
+        default=None,
         description="Biological sex of applicant"
     )
-    height_cm: int = Field(
-        description="Height of applicant in centimeters",
-        gt=50,
-        lt=300
+    height_cm: Optional[int] = Field(
+        default=None,
+        description="Height of applicant in centimeters"
     )
-    residential_address: str = Field(
-        min_length=5,
+    residential_address: Optional[str] = Field(
+        default=None,
         max_length=200,
         description="Residential address of applicant"
     )
-    province: str = Field(
+    province: Optional[str] = Field(
+        default=None,
         description="Province of applicant"
     )
-    postal_code: str = Field(
-        max_length=7,
-        description="Postal code of applicant"
+    postal_code: Optional[str] = Field(
+        default=None,
+        description="Postal code"
     )
-
-# Partial model for saved applications
-class LicenseApplicationSave(LicenseApplicationBase):
-    last_name: Optional[str]
-    first_name: Optional[str]
-    middle_name: Optional[str]
-    license_number: Optional[str]
-    date_of_birth: Optional[date]
-    sex: Optional[str]
-    height_cm: Optional[int]
-    residential_address: Optional[str]
-    province: Optional[str]
-    postal_code: Optional[str]
-
-class LicenseApplication(LicenseApplicationBase, table=True):
-    """Database model for license applications"""
-    __tablename__ = "license_applications"
-    
-    id: Optional[int] = Field(default=None, primary_key=True)
-print("LicenseApplication loaded")
-
-
-'''
-Steps to creating models:
-1. Import SQLModel and Field from sqlmodel
-2. Create class NameofModel(SQLModel, table=True)
-    - table=True is used to create a table in the database
-    - __tablename__ is used to name the table in the database
-3. Add fields to the model
-  
-
-Notes
-Models are for
-- defining the structure of the table in the database
-- defining constraints
-- It is EVERYTHING DATABASE
-
-The database model doesn't care about frontend-specific rules or user input validation.
-
-Fields:
-  - Fields are created using Field() from sqlmodel
-  - Fields are used to define the structure of the table in the database
-  - Define constraints
-
-'''
+    status: str = Field(
+        default="draft",
+        index=True,
+        description="Application status (draft or submitted)"
+    )
