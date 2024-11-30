@@ -55,6 +55,19 @@ class LicenseApplicationBase(SQLModel):
         description="Postal code of applicant"
     )
 
+# Partial model for saved applications
+class LicenseApplicationSave(LicenseApplicationBase):
+    last_name: Optional[str]
+    first_name: Optional[str]
+    middle_name: Optional[str]
+    license_number: Optional[str]
+    date_of_birth: Optional[date]
+    sex: Optional[str]
+    height_cm: Optional[int]
+    residential_address: Optional[str]
+    province: Optional[str]
+    postal_code: Optional[str]
+
 class LicenseApplication(LicenseApplicationBase, table=True):
     """Database model for license applications"""
     __tablename__ = "license_applications"
