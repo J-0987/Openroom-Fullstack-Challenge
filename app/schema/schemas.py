@@ -6,6 +6,8 @@ from typing import Optional
 from ..enums import SexEnum, ProvinceEnum
 
 'base class - contains all fields in application form'
+
+# Completed application schema
 class LicenseApplicationBase(BaseModel):
 
     last_name: Annotated[str, Field(
@@ -35,10 +37,10 @@ class LicenseApplicationBase(BaseModel):
         description="Date of birth of applicant (YYYY-MM-DD)",
         examples=["1990-01-01"]
     )
-    sex: str = Field(
+    sex: Annotated[str, Field(
         description="Biological sex of applicant",
         examples=["male"]
-    )
+    )]
     height_cm: Annotated[int, Field(
         ge=50,
         le=300,
@@ -52,15 +54,29 @@ class LicenseApplicationBase(BaseModel):
         examples=["123 Main Street, Apartment 4B"]
     )]
     
-    province: str = Field(
+    province: Annotated [str, Field(
         description="Province of applicant",
         examples=["Ontario"]
-    )
+    )]
     postal_code: Annotated[str, Field(
         pattern="^[A-Za-z0-9]*$",
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
     )]
+
+# Partial application schema
+class LicenseApplicationSave(BaseModel):
+    last_name: Optional[str]
+    first_name: Optional[str]
+    middle_name: Optional[str]
+    license_number: Optional[str]
+    date_of_birth: Optional[date]
+    sex: Optional[str]
+    height_cm: Optional[int]
+    residential_address: Optional[str]
+    province: Optional[str]
+    postal_code: Optional[str]
+
 
 model_config = ConfigDict(from_attributes=True)
 

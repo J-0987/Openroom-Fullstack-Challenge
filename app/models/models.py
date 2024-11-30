@@ -3,6 +3,7 @@ from sqlmodel import SQLModel, Field
 from datetime import date
 from ..enums import SexEnum, ProvinceEnum
 
+# Completed Application Model
 class LicenseApplicationBase(SQLModel):
     id: Optional[int] = Field(
     default=None, primary_key=True)
