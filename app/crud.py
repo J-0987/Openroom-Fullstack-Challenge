@@ -56,3 +56,11 @@ def delete_application(session: Session, application_id: int):
     session.delete(application)
     session.commit()
     return {"detail": "Application deleted successfully."}
+
+"""
+Notes:
+Purpose of this file:
+- Using models to interact with the database
+- convert incoming data to models 
+- convert model to schema when sending data to client
+"""
