@@ -1,34 +1,58 @@
-#temporary debugging
-import sys
-print(sys.path)
-
-
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlmodel import Session, select
 from app.models import LicenseApplication
-from app.schema import CreateDraft, SubmitApplication
+from app.schema import CreateDraft, SubmitApplication, LicenseApplicationResponse, LicenseApplicationList
+from app.database import get_session
 
-def submit_application(db: Session, license_data: CreateApplication):
-    db_license = LicenseApplicationSubmit(**license_data.model_dump())
-    db.add(db_license)
-    db.commit()
-    db.refresh(db_license)
-    return db_license
+def save_draft(session: Session, data: CreateDraft):
+    """
+    Save a draft license application.
+    """
+    draft = LicenseApplication(**data.dict())
+    session.add(draft)
+    session.commit()
+    session.refresh(draft)
+    return draft
 
+def submit_application(session: Session, application_id: int, data: SubmitApplication):
+    """
+    Submit a draft application by updating its status to 'submitted'.
+    """
+    application = session.get(LicenseApplication, application_id)
+    if not application or application.status != "draft":
+        raise HTTPException(status_code=404, detail="Application not found or not in draft status.")
+    
+    for key, value in data.model_dump().items():
+        setattr(application, key, value)
+    application.status = "submitted"
+    session.add(application)
+    session.commit()
+    session.refresh(application)
+    return application
 
-def get_driver_licenses(db: Session, skip: int = 0, limit: int = 100):
-    statement = select(LicenseApplicationSubmit).offset(skip).limit(limit)
-    return db.exec(statement).all()
+def get_all_applications(session: Session):
+    """
+    Retrieve all license applications from the database.
+    """
+    applications = session.exec(select(LicenseApplication)).all()
+    return applications
 
-def delete_application(db: Session, license_id: int):
-    statement = select(LicenseApplicationSubmit). where(LicenseApplicationList.id == license_id)
-    db_license = db.exec(statement).first()
-    db.delete(db_license)
-    db.commit()
+def get_application_by_id(session: Session, application_id: int):
+    """
+    Retrieve a specific license application by its ID.
+    """
+    application = session.get(LicenseApplication, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found.")
+    return application
 
-    def save_application(db: Session, license_data: CreateApplication):
-        db_license = LicenseApplicationSubmit(**license_data.model_dump())
-        db.add(db_license)
-        db.commit()
-        db.refresh(db_license)
-        return db_license
+def delete_application(session: Session, application_id: int):
+    """
+    Delete a license application by its ID.
+    """
+    application = session.get(LicenseApplication, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found.")
+    session.delete(application)
+    session.commit()
+    return {"detail": "Application deleted successfully."}
