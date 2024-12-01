@@ -8,13 +8,23 @@ def save_draft(session: Session, data: CreateDraft):
     """
     Save a draft license application.
     """
-    draft = LicenseApplication(**data.dict())
+    draft = LicenseApplication(**data.model_dump())
     session.add(draft)
     session.commit()
     session.refresh(draft)
     return draft
 
-def submit_application(session: Session, application_id: int, data: SubmitApplication):
+def submit_application(session: Session, data: SubmitApplication):
+    """
+    Submit a completed license application.
+    """
+    application = LicenseApplication(**data.model_dump())
+    session.add(application)
+    session.commit()
+    session.refresh(application)
+    return application
+
+def submit_draft_application(session: Session, application_id: int, data: SubmitApplication):
     """
     Submit a draft application by updating its status to 'submitted'.
     """

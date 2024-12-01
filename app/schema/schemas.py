@@ -28,7 +28,7 @@ class LicenseApplicationBase(BaseModel):
         examples=["Robert"]
     )]]
     license_number: Annotated[str, Field(
-        pattern="^[A-Z][0-9]{14}$",
+        pattern="^*",
         description="Driver's license number in format XX123456",
         examples=["AB123456"]
     )]
@@ -62,10 +62,13 @@ class LicenseApplicationBase(BaseModel):
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
     )]
-    status: str = Field(
-        description="Application status",
-        examples=["draft", "submitted"]
+    status: Optional[str] = Field(
+        default="draft",
+        description="Application status (draft or submitted)",
+        examples=["draft"]
     )
+    
+    
 
 ## Schema for submitted applications
 class SubmitApplication(LicenseApplicationBase):
@@ -73,7 +76,17 @@ class SubmitApplication(LicenseApplicationBase):
     pass
 
 class CreateDraft(LicenseApplicationBase):
-    model_config = ConfigDict(fields_set_optional=True)
+    last_name: Optional[str] = None
+    first_name: Optional[str] = None
+    middle_name: Optional[str] = None
+    license_number: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    sex: Optional[str] = None
+    height_cm: Optional[int] = None
+    residential_address: Optional[str] = None
+    mailing_address: Optional[str] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
     status: str = Field(default="draft", description="Application status")
 
 ## Response/output schema (see notes)

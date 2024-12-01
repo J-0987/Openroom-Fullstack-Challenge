@@ -62,6 +62,6 @@ class LicenseApplication(SQLModel, table=True):
         description="Application status (draft or submitted)"
     )
     created_at: datetime = Field(
-        default=datetime.now(datetime.timezone.utc),
+        default=datetime.now(),
         description="Timestamp of application creation"
     )
