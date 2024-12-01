@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, Annotated
 from pydantic import BaseModel, Field, constr, conint
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 from enum import Enum
 'base class - contains all fields in application form'
@@ -63,7 +63,6 @@ class LicenseApplicationBase(BaseModel):
         examples=["A1B 2C3"]
     )]
     status: str = Field(
-        default="draft",
         description="Application status",
         examples=["draft", "submitted"]
     )
@@ -71,25 +70,17 @@ class LicenseApplicationBase(BaseModel):
 ## Schema for submitted applications
 class SubmitApplication(LicenseApplicationBase):
     """Schema for final submission with required fields and validations"""
+    pass
 
-    last_name: str = Field(..., description="Required: Applicant's legal last name")
-    first_name: str = Field(..., description="Required: Applicant's legal first name")
-    license_number: str = Field(..., description="Required: Driver's license number")
-    date_of_birth: date = Field(..., description="Required: Date of birth")
-    sex: str = Field(..., description="Required: Biological sex")
-    height_cm: int = Field(..., description="Required: Height in centimeters")
-    residential_address: str = Field(..., description="Required: Current address")
-    province: str = Field(..., description="Required: Province of residence")
-    postal_code: str = Field(..., description="Required: Postal code")
-    status: str = Field(default="submitted", description="Application status")
+class CreateDraft(LicenseApplicationBase):
+    model_config = ConfigDict(fields_set_optional=True)
+    status: str = Field(default="draft", description="Application status")
 
-    """ In Pydantic, Field(...) means the field is required and has no default value1. The ellipsis (...) is Python's way of indicating a required value without a default."""
- 
-
-## Response schema for saved applications
+## Response/output schema (see notes)
 class LicenseApplicationResponse(LicenseApplicationBase):
     """Schema for license application with database ID"""
     id: int = Field(description="Unique identifier for the application")
+    created_at: datetime
 
 class LicenseApplicationList(LicenseApplicationBase):
     """Schema for license application with database ID"""
@@ -100,6 +91,10 @@ class LicenseApplicationList(LicenseApplicationBase):
     status: str
 
 model_config = ConfigDict(from_attributes=True)
+
+
+## Schema for draft applications
+# class CreateDraft(BaseModel):
 
 """
 Steps to creating schemas:
@@ -126,7 +121,9 @@ Notes
     1. Create partial schemas with all fields as optional
         ??How do I ensure both schemas will be in the same table?
     2. Create a base schema with all fields as optional, add validations before submitting. Each will be accompanied by status - "draft and submitted"
-
+Output Schemas
+1. For data coming out of database
+2. Allows customisation of output data
 
 
 """

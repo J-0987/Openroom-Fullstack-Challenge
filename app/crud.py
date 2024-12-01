@@ -5,10 +5,10 @@ print(sys.path)
 
 from fastapi import Depends
 from sqlmodel import Session, select
-from app.models import LicenseApplicationSubmit, LicenseApplicationSave
-from app.schema import CreateApplication, LicenseApplicationList
+from app.models import LicenseApplication
+from app.schema import CreateDraft, SubmitApplication
 
-def create_application(db: Session, license_data: CreateApplication):
+def submit_application(db: Session, license_data: CreateApplication):
     db_license = LicenseApplicationSubmit(**license_data.model_dump())
     db.add(db_license)
     db.commit()
