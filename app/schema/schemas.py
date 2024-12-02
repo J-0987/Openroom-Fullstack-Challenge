@@ -95,12 +95,10 @@ class LicenseApplicationResponse(LicenseApplicationBase):
     id: int = Field(description="Unique identifier for the application")
     created_at: datetime
 
-class LicenseApplicationList(LicenseApplicationBase):
-    """Schema for license application with database ID"""
+class LicenseApplicationList(BaseModel):
+    """Schema for license application with database ID. I am using basemodel to create a schema with only the ID and status"""
     id: int
-    first_name: Optional[str]
-    last_name: Optional[str]
-    license_number: Optional[str]
+    created_at: datetime
     status: str
 
 model_config = ConfigDict(from_attributes=True)
@@ -137,6 +135,16 @@ Notes
 Output Schemas
 1. For data coming out of database
 2. Allows customisation of output data
+
+Debugging when created application list:
+
+Error: Trying to get all appplications, even thouse with incomplete fields. My list scehma was first inherited from license application base, which had all fields. I had to create a new schema with only the ID and status. HEre's why:
+    Derived Classes: If you create another schema (LicenseApplicationList) that inherits from LicenseApplicationBase, by default, all the fields in the base class are inherited unless explicitly modified or removed.
+
+    The error occurs because the GET endpoint is trying to serialize an instance of LicenseApplication into a response using the LicenseApplicationList schema, but some fields (sex and height_cm) have None values, which the response validator still expects.
+
+    Even though you've commented out the fields, the inheritance still includes them unless they are explicitly removed or overridden. Pydantic is attempting to validate all inherited fields, regardless of whether they are commented out.
+
 
 
 """

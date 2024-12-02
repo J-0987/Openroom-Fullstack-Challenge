@@ -35,17 +35,24 @@ def submit_completed_form(data: SubmitApplication, session: Session = Depends(ge
 #List all forms (GET)
 @router.get("/applications/", response_model=List[LicenseApplicationList])
 def list_all_forms(session: Session = Depends(get_session)):
-    print("hello")
-    return get_all_applications(session)
+    try:
+        applications = list(session.exec(select(LicenseApplication)))
+        print("Retrieved applications:", applications)
+        if not applications:
+            raise HTTPException(status_code=404, detail="No applications found.")
+        return applications
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve applications.")
 
 
 #View a specific form (GET)
-@router.get("applications/{application_id}", response_model=LicenseApplicationResponse)
+@router.get("/applications/{application_id}", response_model=LicenseApplicationResponse)
 def view_specific_form(application_id: int, session: Session = Depends(get_session)):
     return get_application_by_id(session, application_id)
 
 #Delete a draft form (DELETE)
-@router.delete("applications/{application_id}")
+@router.delete("/applications/{application_id}")
 def delete_draft_form(application_id: int, session: Session = Depends(get_session)):
     return delete_application(session, application_id)
 
