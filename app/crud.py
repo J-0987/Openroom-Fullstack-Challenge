@@ -24,6 +24,27 @@ def submit_application(session: Session, data: SubmitApplication):
     session.refresh(application)
     return application
 
+def edit_draft(session: Session, application_id: int, data: CreateDraft):
+    """
+    Edit an existing draft license application.
+    """
+    # Retrieve the draft application by ID
+    draft = session.get(LicenseApplication, application_id)
+    
+    if not draft or draft.status != "draft":
+        raise HTTPException(status_code=404, detail="Draft application not found or not in draft status.")
+    
+    # Update the draft with new data
+    for key, value in data.model_dump().items():
+        if value is not None:  # Only update fields that have new values
+            setattr(draft, key, value)
+    
+    session.add(draft)
+    session.commit()
+    session.refresh(draft)
+    
+    return draft
+
 def submit_draft_application(session: Session, application_id: int, data: SubmitApplication):
     """
     Submit a draft application by updating its status to 'submitted'.

@@ -14,21 +14,21 @@ router = APIRouter()
 def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
     return save_draft(session, data)
 
-#Update an existing draft (PUT)
+#Update an existing draft
 @router.put("/applications/draft/{application_id}", response_model=LicenseApplicationResponse)
 def update_application_draft(application_id: int, data: CreateDraft, session: Session = Depends(get_session)):
     return save_draft(session, data)
 
-#submit a completed draft form (PUT)
-@router.put("/applications/submit/{application_id}", response_model=LicenseApplicationResponse)
+#submit a completed draft form 
+@router.post("/applications/submit/{application_id}", response_model=LicenseApplicationResponse)
 def submit_draft_form(application_id: int, data: SubmitApplication, session: Session = Depends(get_session)):
    application = submit_application(session, application_id, data)    
    application.status = "submitted"
    return application
 
-#submit a completed form (PUT)
-@router.put("/applications/submit/", response_model=LicenseApplicationResponse)
-def submit_completed_form(data: SubmitApplication, session: Session = Depends(get_session)):
+#submit a completed form 
+@router.post("/applications/complete/submit/", response_model=LicenseApplicationResponse)
+def submit_complete_application(data: SubmitApplication, session: Session = Depends(get_session)):
     return submit_application(session, data)    
 
 
