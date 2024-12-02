@@ -58,7 +58,7 @@ class LicenseApplicationBase(BaseModel):
         examples=["Ontario"]
     )]
     postal_code: Annotated[str, Field(
-        pattern="^[A-Za-z0-9]*$",
+        pattern="^*",
         description="Postal code in Canadian format (A1A 1A1)",
         examples=["A1B 2C3"]
     )]
@@ -84,7 +84,6 @@ class CreateDraft(LicenseApplicationBase):
     sex: Optional[str] = None
     height_cm: Optional[int] = None
     residential_address: Optional[str] = None
-    mailing_address: Optional[str] = None
     province: Optional[str] = None
     postal_code: Optional[str] = None
     status: str = Field(default="draft", description="Application status")
@@ -106,7 +105,6 @@ class LicenseApplicationList(BaseModel):
     sex: Optional[str] = None
     height_cm: Optional[int] = None
     residential_address: Optional[str] = None
-    mailing_address: Optional[str] = None
     province: Optional[str] = None
     postal_code: Optional[str] = None
     created_at: datetime
