@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 from app.models import LicenseApplication
 from app.schema import CreateDraft, SubmitApplication, LicenseApplicationResponse, LicenseApplicationList
 from app.database import get_session
-from app.crud import save_draft, submit_application, get_all_applications, get_application_by_id, delete_application, submit_draft_application
+from app.crud import save_draft, submit_application, get_all_applications, get_application_by_id, delete_application, submit_draft_application, edit_draft
 from typing import List
 
 
@@ -14,10 +14,10 @@ router = APIRouter()
 def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
     return save_draft(session, data)
 
-#Update an existing draft
-@router.put("/applications/draft/{application_id}", response_model=LicenseApplicationResponse)
+#Update/Edit an existing draft
+@router.put("/applications/draft/edit/{application_id}", response_model=LicenseApplicationResponse)
 def update_application_draft(application_id: int, data: CreateDraft, session: Session = Depends(get_session)):
-    return save_draft(session, data)
+    return edit_draft(session, application_id, data)
 
 #submit a completed draft form 
 @router.post("/applications/submit/{application_id}", response_model=LicenseApplicationResponse)

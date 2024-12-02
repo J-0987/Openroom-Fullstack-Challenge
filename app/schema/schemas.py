@@ -98,6 +98,17 @@ class LicenseApplicationResponse(LicenseApplicationBase):
 class LicenseApplicationList(BaseModel):
     """Schema for license application with database ID. I am using basemodel to create a schema with only the ID and status"""
     id: int
+    last_name: Optional[str] = None
+    first_name: Optional[str] = None
+    middle_name: Optional[str] = None
+    license_number: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    sex: Optional[str] = None
+    height_cm: Optional[int] = None
+    residential_address: Optional[str] = None
+    mailing_address: Optional[str] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
     created_at: datetime
     status: str
 
