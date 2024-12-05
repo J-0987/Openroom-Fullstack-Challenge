@@ -63,9 +63,7 @@ class LicenseApplication(LicenseApplicationBase, table=True):
     __tablename__ = "license_applications"
 
     id: Optional[int] = Field(default=None, primary_key=True, description="Unique identifier for the application")
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Timestamp of application creation")
+    status: str = Field(default="draft", description="Status of the application")
 
-    created_at: datetime = Field(
-        default=datetime.now(),
-        description="Timestamp of application creation"
-    )
- 
+

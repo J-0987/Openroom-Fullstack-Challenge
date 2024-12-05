@@ -1,34 +1,64 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 from app.models import LicenseApplication
-from app.schema import CreateDraft, SubmitApplication, LicenseApplicationResponse, LicenseApplicationList
+from app.schema import LicenseApplicationCreate, LicenseApplicationResponse, LicenseApplicationList, LicenseApplicationEdit, LicenseApplicationSubmit
 from app.database import get_session
-from app.crud import save_draft, submit_application, get_all_applications, get_application_by_id, delete_application, submit_draft_application, edit_draft
+from app.crud import delete_application, get_application_by_id, get_all_applications, create_draft, edit_draft, submit_application
 from typing import List
-
 
 router = APIRouter()
 
+#Create application
+@router.post("/applications/", response_model=LicenseApplicationResponse)
+def create_application(data: LicenseApplicationCreate , session: Session = Depends(get_session)):
+    application = LicenseApplication(**data.model_dump())
 
-@router.post("/applications/save-draft/", response_model=LicenseApplicationResponse)
-async def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
+    session.add(application)
+    session.commit()
+    session.refresh(application)
+    return application
 
-    draft = save_draft(session, data)
-    # Return the response using the response model to ensure it matches the expected format
-    # response = LicenseApplicationResponse(draft)
-    return draft
+#Update/Edit application
+@router.patch("/applications/{application_id}", response_model=LicenseApplicationResponse)
+def edit_application(application_id: int, updates: LicenseApplicationEdit, session: Session = Depends(get_session)):
+    application = session.get(LicenseApplication, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found")
+    for key, value in updates.model_dump(exclude_unset=True).items():
+        setattr(application, key, value)
+    session.commit()
+    session.refresh(application)
+    return application
 
-
-#Update/Edit an existing draft
-@router.put("/applications/edit-draft/{application_id}", response_model=LicenseApplicationResponse)
-def edit_application(application_id: int, data: CreateDraft, session: Session = Depends(get_session)):
-    return edit_draft(session, application_id, data)
-
-#submit a completed form 
-@router.post("/applications/submit/", response_model=LicenseApplicationResponse)
-def submit_application(data: SubmitApplication, session: Session = Depends(get_session)):
-    return submit_application(session, data)    
-
+#submit application
+@router.post("/applications/submit", response_model=LicenseApplicationResponse)
+def submit_application( data: LicenseApplicationSubmit, session: Session = Depends
+(get_session)):
+  application = session.get(LicenseApplication, data.id)
+  if not application:
+        raise HTTPException(status_code=404, detail="Application not found")
+  
+  missing_fields = [
+        field for field, value in data.model_dump().items() if value is None
+  ]
+  if missing_fields:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Missing required fields: {', '.join(missing_fields)}"
+        )
+  application.status = "submitted"
+  session.add(application)
+  session.commit()
+  session.refresh(application)
+  return application
+  
+#Get single application
+@router.get("/applications/{application_id}", response_model=LicenseApplicationResponse)
+def get_application(application_id: int , session: Session = Depends(get_session)):
+    application = session.get(LicenseApplication, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Application not found")
+    return application
 
 #List all forms (GET)
 @router.get("/applications/", response_model=List[LicenseApplicationList])
@@ -43,21 +73,10 @@ def list_all_forms(session: Session = Depends(get_session)):
         print(f"Error occurred: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to retrieve applications.")
 
-
-#View a specific form (GET)
-@router.get("/applications/{application_id}", response_model=LicenseApplicationResponse)
-def view_specific_form(application_id: int, session: Session = Depends(get_session)):
-    return get_application_by_id(session, application_id)
-
 #Delete a draft form (DELETE)
 @router.delete("/applications/{application_id}")
 def delete_draft_form(application_id: int, session: Session = Depends(get_session)):
     return delete_application(session, application_id)
-
-
-
-
-
 
 
 """
