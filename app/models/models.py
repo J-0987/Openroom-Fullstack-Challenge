@@ -39,10 +39,17 @@ class LicenseApplicationBase(SQLModel):
         default=None,
         description="Height of applicant in centimeters"
     )
-    residential_address: Optional[str] = Field(
+    street_number: Optional[str] = Field(
         default=None,
-        max_length=200,
-        description="Residential address of applicant"
+        description="Street number of applicant"
+    )
+    street_name: Optional[str] = Field(
+        default=None,
+        description="Street name of applicant"
+    )
+    city: Optional[str] = Field(
+        default=None,
+        description="City of applicant"
     )
     province: Optional[str] = Field(
         default=None,

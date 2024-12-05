@@ -7,20 +7,24 @@ from typing import Optional
 #Create draft application
 class LicenseApplicationCreate(SQLModel):
     """Schema for creating a new license application"""
-    id: int
+   
     last_name: str
     first_name: str
     license_number: Optional[str] = None
     date_of_birth: Optional[date] = None
     sex: Optional[str] = None
     height_cm: Optional[int] = None
-    residential_address: Optional[str] = None
+    street_number: Optional[str] = None 
+    street_name: Optional[str] = None
+    city: Optional[str] = None
     province: Optional[str] = None
     postal_code: Optional[str] = None
+    
 
 #Edit draft application
 class LicenseApplicationEdit(SQLModel):
     """Schema for updating an existing license application"""
+    id: int
     last_name: Optional[str] = None
     first_name: Optional[str] = None
     middle_name: Optional[str] = None
@@ -28,7 +32,9 @@ class LicenseApplicationEdit(SQLModel):
     date_of_birth: Optional[date] = None
     sex: Optional[str] = None
     height_cm: Optional[int] = None
-    residential_address: Optional[str] = None
+    street_number: Optional[str] = None 
+    street_name: Optional[str] = None
+    city: Optional[str] = None
     province: Optional[str] = None
     postal_code: Optional[str] = None
     status: Optional[str] = None
@@ -36,16 +42,19 @@ class LicenseApplicationEdit(SQLModel):
 #Submit application
 class LicenseApplicationSubmit(SQLModel):
     """Schema for submitting a license application"""
-    id: int
+    id: Optional[int] = None
     last_name: str
     first_name: str
     license_number: str
     date_of_birth: date
     sex: str
     height_cm: int
-    residential_address: str
-    province: str
-    postal_code: str
+    street_number: Optional[str] = None 
+    street_name: Optional[str] = None
+    city: Optional[str] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
+
 
 
 class LicenseApplicationResponse(SQLModel):
@@ -58,11 +67,12 @@ class LicenseApplicationResponse(SQLModel):
      date_of_birth: Optional[date] = None
      sex: Optional[str] = None
      height_cm: Optional[int] = None
-     residential_address: Optional[str] = None
+     street_number: Optional[str] = None 
+     street_name: Optional[str] = None
+     city: Optional[str] = None
      province: Optional[str] = None
      postal_code: Optional[str] = None
-     status: str
-     created_at: datetime
+     
 
     
 class LicenseApplicationList(SQLModel):
