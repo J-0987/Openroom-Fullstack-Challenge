@@ -8,6 +8,7 @@ from enum import Enum
 
 # Base class for license
 class LicenseApplicationBase(BaseModel):
+    model_config = ConfigDict(from_attributes=True) 
 
     last_name: Annotated[str, Field(
         min_length=1, 
@@ -67,15 +68,16 @@ class LicenseApplicationBase(BaseModel):
         description="Application status (draft or submitted)",
         examples=["draft"]
     )
-    
-    
 
 ## Schema for submitted applications
 class SubmitApplication(LicenseApplicationBase):
     """Schema for final submission with required fields and validations"""
     pass
+    model_config = ConfigDict(from_attributes=True)
 
+    # Id as a mandatory filed to accept in frontend payload - Frontend ID // validate id if exists, iverride, if nt, create new. 
 class CreateDraft(LicenseApplicationBase):
+    id: int
     last_name: Optional[str] = None
     first_name: Optional[str] = None
     middle_name: Optional[str] = None
@@ -87,12 +89,14 @@ class CreateDraft(LicenseApplicationBase):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     status: str = Field(default="draft", description="Application status")
+    model_config = ConfigDict(from_attributes=True)
 
 ## Response/output schema (see notes)
 class LicenseApplicationResponse(LicenseApplicationBase):
     """Schema for license application with database ID"""
     id: int = Field(description="Unique identifier for the application")
     created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
 
 class LicenseApplicationList(BaseModel):
     """Schema for license application with database ID. I am using basemodel to create a schema with only the ID and status"""
@@ -110,7 +114,7 @@ class LicenseApplicationList(BaseModel):
     created_at: datetime
     status: str
 
-model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
 
 ## Schema for draft applications

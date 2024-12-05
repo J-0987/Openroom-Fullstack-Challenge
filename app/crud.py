@@ -6,13 +6,17 @@ from app.database import get_session
 
 def save_draft(session: Session, data: CreateDraft):
     """
-    Save a draft license application.
+    Save a draft license application. Must have Id in the payload. Validate that at least one field is populated, save rest as none
     """
     draft = LicenseApplication(**data.model_dump())
     session.add(draft)
     session.commit()
     session.refresh(draft)
     return draft
+
+#[if id validation cmes from frontend]
+# def create_draft(session: Session, data: CreateDraft):
+
 
 def submit_application(session: Session, data: SubmitApplication):
     """

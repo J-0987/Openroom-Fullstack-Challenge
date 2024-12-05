@@ -9,10 +9,15 @@ from typing import List
 
 router = APIRouter()
 
-# Save a Draft (POST)
+
 @router.post("/applications/draft/", response_model=LicenseApplicationResponse)
-def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
-    return save_draft(session, data)
+async def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
+
+    draft = save_draft(session, data)
+    # Return the response using the response model to ensure it matches the expected format
+    # response = LicenseApplicationResponse(draft)
+    return draft
+
 
 #Update/Edit an existing draft
 @router.put("/applications/edit/{application_id}", response_model=LicenseApplicationResponse)
