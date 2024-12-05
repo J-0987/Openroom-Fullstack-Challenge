@@ -1,40 +1,47 @@
 from fastapi import Depends, HTTPException
 from sqlmodel import Session, select
 from app.models import LicenseApplication
-from app.schema import CreateDraft, SubmitApplication, LicenseApplicationResponse, LicenseApplicationList
-from app.database import get_session
+from app.schema import LicenseApplicationCreate, LicenseApplicationResponse, LicenseApplicationEdit, LicenseApplicationList, LicenseApplicationSubmit
 
-def save_draft(session: Session, data: CreateDraft):
+# create application
+def create_draft(session: Session, data: LicenseApplicationCreate):
     """
-    Save a draft license application.
+    Save a draft license application. Must have Id in the payload. Validate that at least one field is populated, save rest as none
     """
-    draft = LicenseApplication(**data.model_dump())
+    draft = LicenseApplication(**data.model_dump(), status="draft")
     session.add(draft)
     session.commit()
     session.refresh(draft)
     return draft
 
-def submit_application(session: Session, data: SubmitApplication):
+# edit application
+def edit_draft(session: Session, application_id: int, data: LicenseApplicationEdit):
     """
-    Submit a completed license application.
+    Retrieve the draft application by ID and update it with new data.
     """
-    application = LicenseApplication(**data.model_dump())
-    session.add(application)
-    session.commit()
-    session.refresh(application)
-    return application
-
-def submit_draft_application(session: Session, application_id: int, data: SubmitApplication):
-    """
-    Submit a draft application by updating its status to 'submitted'.
-    """
-    application = session.get(LicenseApplication, application_id)
-    if not application or application.status != "draft":
-        raise HTTPException(status_code=404, detail="Application not found or not in draft status.")
+    # Retrieve the draft application by ID
+    draft = session.get(LicenseApplication, application_id)
     
+    if not draft or draft.status != "draft":
+        raise HTTPException(status_code=404, detail="Draft application not found or not in draft status.")
+    
+    # Update the draft with new data
     for key, value in data.model_dump().items():
-        setattr(application, key, value)
-    application.status = "submitted"
+        if value is not None:  # Only update fields that have new values
+            setattr(draft, key, value)
+    
+    session.add(draft)
+    session.commit()
+    session.refresh(draft)
+    
+    return draft
+
+#submit application
+def submit_application(session: Session, data: LicenseApplicationSubmit):
+    """
+    Payload should have all the required fields including ID. Validate that all fields are populated. Save to db
+    """
+    application = LicenseApplication(**data.model_dump(), status="submitted")
     session.add(application)
     session.commit()
     session.refresh(application)

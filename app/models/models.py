@@ -2,13 +2,9 @@ from typing import Optional
 from sqlmodel import SQLModel, Field
 from datetime import date, datetime
 
-class LicenseApplication(SQLModel, table=True):
+class LicenseApplicationBase(SQLModel):
     """Database model for license applications"""
-    __tablename__ = "license_applications"
-    
-    # Required fields with validation constraints
 
-    id: Optional[int] = Field(default=None, primary_key=True, description="Unique identifier for the application")
 
     last_name: Optional[str] = Field(
         default=None,
@@ -61,7 +57,13 @@ class LicenseApplication(SQLModel, table=True):
         index=True,
         description="Application status (draft or submitted)"
     )
-    created_at: datetime = Field(
-        default=datetime.now(),
-        description="Timestamp of application creation"
-    )
+ 
+class LicenseApplication(LicenseApplicationBase, table=True):
+    """Database model for license applications"""
+    __tablename__ = "license_applications"
+
+    id: Optional[int] = Field(default=None, primary_key=True, description="Unique identifier for the application")
+    created_at: datetime = Field(default_factory=datetime.utcnow, description="Timestamp of application creation")
+    status: str = Field(default="draft", description="Status of the application")
+
+

@@ -1,1 +1,1 @@
-from .models import LicenseApplication
+from .models import LicenseApplication, LicenseApplicationBase

@@ -1,81 +1,26 @@
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional, Annotated
-from pydantic import BaseModel, Field, constr, conint
+
+from sqlmodel import SQLModel, Field
+from typing import Optional
 from datetime import date, datetime
 from typing import Optional
-from enum import Enum
-'base class - contains all fields in application form'
 
-# Base class for license
-class LicenseApplicationBase(BaseModel):
+#Create draft application
+class LicenseApplicationCreate(SQLModel):
+    """Schema for creating a new license application"""
+    id: int
+    last_name: str
+    first_name: str
+    license_number: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    sex: Optional[str] = None
+    height_cm: Optional[int] = None
+    residential_address: Optional[str] = None
+    province: Optional[str] = None
+    postal_code: Optional[str] = None
 
-    last_name: Annotated[str, Field(
-        min_length=1, 
-        max_length=50,
-        description="Last name of applicant (1-50 characters)",
-        examples=["Smith"]
-    )]
-    first_name: Annotated[str, Field(
-        min_length=1,
-        max_length=50,
-        description="First name of applicant (1-50 characters)",
-        examples=["John"]
-    )]
-    middle_name: Optional[Annotated[str, Field(
-        max_length=50,
-        default=None,
-        description="Middle name of applicant (optional, max 50 characters)",
-        examples=["Robert"]
-    )]]
-    license_number: Annotated[str, Field(
-        pattern="^*",
-        description="Driver's license number in format XX123456",
-        examples=["AB123456"]
-    )]
-    date_of_birth: date = Field(
-        description="Date of birth of applicant (YYYY-MM-DD)",
-        examples=["1990-01-01"]
-    )
-    sex: Annotated[str, Field(
-        description="Biological sex of applicant",
-        examples=["male"]
-    )]
-    height_cm: Annotated[int, Field(
-        ge=50,
-        le=300,
-        description="Height of applicant in centimeters (50-300cm)",
-        examples=[175]
-    )]
-    residential_address: Annotated[str, Field(
-        min_length=5,
-        max_length=200,
-        description="Residential address of applicant (5-200 characters)",
-        examples=["123 Main Street, Apartment 4B"]
-    )]
-    
-    province: Annotated [str, Field(
-        description="Province of applicant",
-        examples=["Ontario"]
-    )]
-    postal_code: Annotated[str, Field(
-        pattern="^[A-Za-z0-9]*$",
-        description="Postal code in Canadian format (A1A 1A1)",
-        examples=["A1B 2C3"]
-    )]
-    status: Optional[str] = Field(
-        default="draft",
-        description="Application status (draft or submitted)",
-        examples=["draft"]
-    )
-    
-    
-
-## Schema for submitted applications
-class SubmitApplication(LicenseApplicationBase):
-    """Schema for final submission with required fields and validations"""
-    pass
-
-class CreateDraft(LicenseApplicationBase):
+#Edit draft application
+class LicenseApplicationEdit(SQLModel):
+    """Schema for updating an existing license application"""
     last_name: Optional[str] = None
     first_name: Optional[str] = None
     middle_name: Optional[str] = None
@@ -84,28 +29,50 @@ class CreateDraft(LicenseApplicationBase):
     sex: Optional[str] = None
     height_cm: Optional[int] = None
     residential_address: Optional[str] = None
-    mailing_address: Optional[str] = None
     province: Optional[str] = None
     postal_code: Optional[str] = None
-    status: str = Field(default="draft", description="Application status")
+    status: Optional[str] = None
 
-## Response/output schema (see notes)
-class LicenseApplicationResponse(LicenseApplicationBase):
-    """Schema for license application with database ID"""
-    id: int = Field(description="Unique identifier for the application")
-    created_at: datetime
-
-class LicenseApplicationList(BaseModel):
-    """Schema for license application with database ID. I am using basemodel to create a schema with only the ID and status"""
+#Submit application
+class LicenseApplicationSubmit(SQLModel):
+    """Schema for submitting a license application"""
     id: int
-    created_at: datetime
+    last_name: str
+    first_name: str
+    license_number: str
+    date_of_birth: date
+    sex: str
+    height_cm: int
+    residential_address: str
+    province: str
+    postal_code: str
+
+
+class LicenseApplicationResponse(SQLModel):
+     """Schema for responding with license application data"""
+     id: int
+     last_name: Optional[str] = None
+     first_name: Optional[str] = None
+     middle_name: Optional[str] = None
+     license_number: Optional[str] = None
+     date_of_birth: Optional[date] = None
+     sex: Optional[str] = None
+     height_cm: Optional[int] = None
+     residential_address: Optional[str] = None
+     province: Optional[str] = None
+     postal_code: Optional[str] = None
+     status: str
+     created_at: datetime
+
+    
+class LicenseApplicationList(SQLModel):
+    """Schema for listing all applications"""
+    id: int
+    last_name: Optional[str] = None
+    first_name: Optional[str] = None
     status: str
+    created_at: datetime
 
-model_config = ConfigDict(from_attributes=True)
-
-
-## Schema for draft applications
-# class CreateDraft(BaseModel):
 
 """
 Steps to creating schemas:

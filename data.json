@@ -1,68 +1,84 @@
 {
-  "last_name": "Smith",
+  "last_name": "Doe",
   "first_name": "John",
-  "middle_name": "Alexander",
-  "license_number": "L123456789",
-  "date_of_birth": "1985-07-15",
-  "sex": "Male",
+  "middle_name": "Edward",
+  "license_number": "AB123456",
+  "date_of_birth": "1990-05-15",
+  "sex": "male",
   "height_cm": 180,
-  "residential_address": "123 Maple Street",
-  "mailing_address": "456 Oak Avenue",
+  "residential_address": "123 Main Street, Cityville",
   "province": "Ontario",
   "postal_code": "A1B2C3"
-}
+},
 
-  {
-  "last_name": "Doe",
-  "first_name": "Jane",
-  "middle_name": "Elizabeth",
-  "license_number": "L987654321",
-  "date_of_birth": "1992-03-08",
-  "sex": "Female",
+{
+  "last_name": "Smith",
+  "first_name": "Alice",
+  "middle_name": "Marie",
+  "license_number": "CD654321",
+  "date_of_birth": "1985-10-22",
+  "sex": "female",
   "height_cm": 165,
-  "residential_address": "789 Pine Lane",
-  "mailing_address": "789 Pine Lane",
+  "residential_address": "789 Elm Street, Suburbia",
+  "province": "Ontario",
+  "postal_code": "B2C 3D4",
+  "status": "draft"
+},
+{
+  "last_name": "Johnson",
+  "first_name": "Michael",
+  "middle_name": "David",
+  "license_number": "EF789012",
+  "date_of_birth": "1978-03-18",
+  "sex": "male",
+  "height_cm": 175,
+  "residential_address": "456 Oak Avenue, Townsville",
+  "province": "British Columbia",
+  "postal_code": "C3D 4E5",
+  "status": "draft"
+},
+
+{
+  "last_name": "Williams",
+  "first_name": "Sarah",
+  "middle_name": "Ann",
+  "license_number": "GH345678",
+  "date_of_birth": "1992-12-05",
+  "sex": "female",
+  "height_cm": 168,
+  "residential_address": "321 Pine Lane, Villageville",
   "province": "Quebec",
-  "postal_code": "D4E5F6"
+  "postal_code": "D4E 5F6",
+  "status": "draft"
+},
+{
+  "last_name": "Brown",
+  "first_name": "Robert",
+  "middle_name": null,
+  "license_number": "IJ901234",
+  "date_of_birth": "1965-07-12",
+  "sex": "male",
+  "height_cm": 180,
+  "residential_address": "987 Maple Drive, Cityville",
+  "province": "Manitoba",
+  "postal_code": "E5F 6G7",
+  "status": "draft"
+},
+
+{
+  "last_name": "Davis",
+  "first_name": "Emily",
+  "middle_name": "Grace",
+  "license_number": "KL567890",
+  "date_of_birth": "2000-09-09",
+  "sex": "female",
+  "height_cm": 160,
+  "residential_address": "654 Spruce Road, Hamletton",
+  "province": "Alberta",
+  "postal_code": "F6G 7H8",
+  "status": "draft"
 }
 
-  {
-  "last_name": "Lee",
-  "first_name": "Chris",
-  "middle_name": "Michael",
-  "license_number": "L555123789",
-  "date_of_birth": "2000-12-25",
-  "sex": "Non-Binary",
-  "height_cm": 172,
-  "residential_address": "321 Birch Road",
-  "mailing_address": "PO Box 123",
-  "province": "British Columbia",
-  "postal_code": "G7H8I9"
-}
-  
-  {
-  "last_name": "Patel",
-  "first_name": "Anika",
-  "middle_name": "Ravi",
-  "license_number": "L888444777",
-  "date_of_birth": "1978-06-14",
-  "sex": "Female",
-  "height_cm": 155,
-  "residential_address": "55 Elm Boulevard",
-  "mailing_address": "55 Elm Boulevard",
-  "province": "Alberta",
-  "postal_code": "J2K3L4"
-}
-  {
-  "last_name": "Garcia",
-  "first_name": "Carlos",
-  "middle_name": "Fernando",
-  "license_number": "L666222999",
-  "date_of_birth": "1995-09-23",
-  "sex": "Male",
-  "height_cm": 178,
-  "residential_address": "987 Cedar Court",
-  "mailing_address": "987 Cedar Court",
-  "province": "Manitoba",
-  "postal_code": "M5N6O7"
-}
+
+
+
