@@ -10,7 +10,7 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/applications/draft/", response_model=LicenseApplicationResponse)
+@router.post("/applications/save-draft/", response_model=LicenseApplicationResponse)
 async def save_application_draft(data: CreateDraft, session: Session = Depends(get_session)):
 
     draft = save_draft(session, data)
@@ -20,20 +20,13 @@ async def save_application_draft(data: CreateDraft, session: Session = Depends(g
 
 
 #Update/Edit an existing draft
-@router.put("/applications/edit/{application_id}", response_model=LicenseApplicationResponse)
-def update_application_draft(application_id: int, data: CreateDraft, session: Session = Depends(get_session)):
+@router.put("/applications/edit-draft/{application_id}", response_model=LicenseApplicationResponse)
+def edit_application(application_id: int, data: CreateDraft, session: Session = Depends(get_session)):
     return edit_draft(session, application_id, data)
 
-#submit a completed draft form 
-@router.post("/applications/submit/{application_id}", response_model=LicenseApplicationResponse)
-def submit_draft_form(application_id: int, data: SubmitApplication, session: Session = Depends(get_session)):
-   application = submit_draft_application(session, application_id, data)    
-   application.status = "submitted"
-   return application
-
 #submit a completed form 
-@router.post("/applications/complete/submit/", response_model=LicenseApplicationResponse)
-def submit_complete_application(data: SubmitApplication, session: Session = Depends(get_session)):
+@router.post("/applications/submit/", response_model=LicenseApplicationResponse)
+def submit_application(data: SubmitApplication, session: Session = Depends(get_session)):
     return submit_application(session, data)    
 
 

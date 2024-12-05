@@ -14,23 +14,10 @@ def save_draft(session: Session, data: CreateDraft):
     session.refresh(draft)
     return draft
 
-#[if id validation cmes from frontend]
-# def create_draft(session: Session, data: CreateDraft):
-
-
-def submit_application(session: Session, data: SubmitApplication):
-    """
-    Submit a completed license application.
-    """
-    application = LicenseApplication(**data.model_dump())
-    session.add(application)
-    session.commit()
-    session.refresh(application)
-    return application
 
 def edit_draft(session: Session, application_id: int, data: CreateDraft):
     """
-    Edit an existing draft license application.
+    Retrieve the draft application by ID and update it with new data.
     """
     # Retrieve the draft application by ID
     draft = session.get(LicenseApplication, application_id)
@@ -49,17 +36,11 @@ def edit_draft(session: Session, application_id: int, data: CreateDraft):
     
     return draft
 
-def submit_draft_application(session: Session, application_id: int, data: SubmitApplication):
+def submit_application(session: Session, data: SubmitApplication):
     """
-    Submit a draft application by updating its status to 'submitted'.
+    Payload should have all the required fields including ID. Validate that all fields are populated. Save to db
     """
-    application = session.get(LicenseApplication, application_id)
-    if not application or application.status != "draft":
-        raise HTTPException(status_code=404, detail="Application not found or not in draft status.")
-    
-    for key, value in data.model_dump().items():
-        setattr(application, key, value)
-    application.status = "submitted"
+    application = LicenseApplication(**data.model_dump())
     session.add(application)
     session.commit()
     session.refresh(application)
