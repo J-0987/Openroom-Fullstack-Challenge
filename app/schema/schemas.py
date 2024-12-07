@@ -1,6 +1,7 @@
 
 from sqlmodel import SQLModel, Field
 from typing import Optional
+from pydantic import constr
 from datetime import date, datetime
 from typing import Optional
 
@@ -14,7 +15,8 @@ class LicenseApplicationCreate(SQLModel):
     date_of_birth: Optional[date] = None
     sex: Optional[str] = None
     height_cm: Optional[int] = None
-    street_number: Optional[str] = None 
+    unit_number: Optional[int] = None
+    street_number: Optional[int] = None 
     street_name: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
@@ -24,7 +26,6 @@ class LicenseApplicationCreate(SQLModel):
 #Edit draft application
 class LicenseApplicationEdit(SQLModel):
     """Schema for updating an existing license application"""
-    id: int
     last_name: Optional[str] = None
     first_name: Optional[str] = None
     middle_name: Optional[str] = None
@@ -32,7 +33,8 @@ class LicenseApplicationEdit(SQLModel):
     date_of_birth: Optional[date] = None
     sex: Optional[str] = None
     height_cm: Optional[int] = None
-    street_number: Optional[str] = None 
+    unit_number: Optional[int] = None
+    street_number: Optional[int] = None 
     street_name: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
@@ -49,11 +51,12 @@ class LicenseApplicationSubmit(SQLModel):
     date_of_birth: date
     sex: str
     height_cm: int
-    street_number: Optional[str] = None 
-    street_name: Optional[str] = None
-    city: Optional[str] = None
-    province: Optional[str] = None
-    postal_code: Optional[str] = None
+    unit_number: Optional[int] = None
+    street_number: Optional[int] = None 
+    street_name: str
+    city: str
+    province: str
+    postal_code: str
 
 
 
@@ -67,7 +70,8 @@ class LicenseApplicationResponse(SQLModel):
      date_of_birth: Optional[date] = None
      sex: Optional[str] = None
      height_cm: Optional[int] = None
-     street_number: Optional[str] = None 
+     unit_number: Optional[int] = None
+     street_number: Optional[int] = None 
      street_name: Optional[str] = None
      city: Optional[str] = None
      province: Optional[str] = None

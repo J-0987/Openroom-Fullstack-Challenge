@@ -39,7 +39,11 @@ class LicenseApplicationBase(SQLModel):
         default=None,
         description="Height of applicant in centimeters"
     )
-    street_number: Optional[str] = Field(
+    unit_number: Optional[int] = Field(
+        default=None,
+        description="Unit number of applicant"
+    )
+    street_number: Optional[int] = Field(
         default=None,
         description="Street number of applicant"
     )

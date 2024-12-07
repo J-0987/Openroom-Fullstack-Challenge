@@ -6,7 +6,7 @@ from app.schema import LicenseApplicationCreate, LicenseApplicationResponse, Lic
 # create application
 def create_draft(session: Session, data: LicenseApplicationCreate):
     """
-    Save a draft license application. Must have Id in the payload. Validate that at least one field is populated, save rest as none
+    Save a draft license application. 
     """
     draft = LicenseApplication(**data.model_dump(), status="draft")
     session.add(draft)
@@ -39,8 +39,9 @@ def edit_draft(session: Session, application_id: int, data: LicenseApplicationEd
 #submit application
 def submit_application(session: Session, data: LicenseApplicationSubmit):
     """
-    Payload should have all the required fields including ID. Validate that all fields are populated. Save to db
+    Submit a complete application. Stricter validation.
     """
+  
     application = LicenseApplication(**data.model_dump(), status="submitted")
     session.add(application)
     session.commit()
@@ -52,6 +53,8 @@ def get_all_applications(session: Session):
     Retrieve all license applications from the database.
     """
     applications = session.exec(select(LicenseApplication)).all()
+    if not applications:
+        raise HTTPException(status_code=404, detail="No applications found.")
     return applications
 
 def get_application_by_id(session: Session, application_id: int):
