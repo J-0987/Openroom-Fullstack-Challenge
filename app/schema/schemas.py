@@ -16,7 +16,7 @@ class LicenseApplicationCreate(SQLModel):
     sex: Optional[str] = None
     height_cm: Optional[int] = None
     unit_number: Optional[int] = None
-    street_number: Optional[str] = None 
+    street_number: Optional[int] = None 
     street_name: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
@@ -34,7 +34,7 @@ class LicenseApplicationEdit(SQLModel):
     sex: Optional[str] = None
     height_cm: Optional[int] = None
     unit_number: Optional[int] = None
-    street_number: Optional[str] = None 
+    street_number: Optional[int] = None 
     street_name: Optional[str] = None
     city: Optional[str] = None
     province: Optional[str] = None
@@ -71,7 +71,7 @@ class LicenseApplicationResponse(SQLModel):
      sex: Optional[str] = None
      height_cm: Optional[int] = None
      unit_number: Optional[int] = None
-     street_number: Optional[str] = None 
+     street_number: Optional[int] = None 
      street_name: Optional[str] = None
      city: Optional[str] = None
      province: Optional[str] = None
